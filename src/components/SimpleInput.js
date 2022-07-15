@@ -1,18 +1,28 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const SimpleInput = (props) => {
     const [enteredName, setEnteredName] = useState("");
     //const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
     const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+    //const [formIsValid, setFormIsValid] = useState(false);
 
 
     const enteredNameIsValid = enteredName.trim() !== "";
     const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-    /* useEffect(() => {
-         console.log("Name input is valid!")
-     }, [enteredNameIsValid])
- */
+ /*   useEffect(()=>{
+        if(enteredNameIsValid) {setFormIsValid(true)}
+        else { setFormIsValid(false)}
+    }, [enteredNameIsValid])
+*/
+
+    let formIsValid=false
+    if(enteredNameIsValid) {
+        formIsValid=true
+    } else {
+        formIsValid=false
+    }
+
 
     //1
     const inputChangeHandler = (event) => {
@@ -56,8 +66,14 @@ const SimpleInput = (props) => {
                        onChange={inputChangeHandler}/>
                 {nameInputIsInvalid && <p className='error-text'>Name must not be empty</p>}
             </div>
+            <div className={nameInputClasses}>
+                <label htmlFor='name'>Your Email</label>
+                <input onBlur={nameInputBlurHandler} value={enteredName} type='text' id='name'
+                       onChange={inputChangeHandler}/>
+                {nameInputIsInvalid && <p className='error-text'>Email must not be empty</p>}
+            </div>
             <div className="form-actions">
-                <button>Submit</button>
+                <button disabled={!formIsValid}>Submit</button>
             </div>
         </form>
     );
